@@ -44,7 +44,10 @@ class TestSparseMerkle(unittest.TestCase):
                          '8-0-0-0-0-0-0-0')
         self.assertEqual(self.x.find_root(1, 4, [0, 4], null_proofs),
                          '8-0-0-0-12-0-0-0')
-        self.assertEqual(self.x.find_root(1, 4, [0, 1, 2, 3, 4, 5, 6, 7], null_proofs),
+        self.assertEqual(self.x.find_root(1,
+                                          4,
+                                          [0, 1, 2, 3, 4, 5, 6, 7],
+                                          null_proofs),
                          '8-9-10-11-12-13-14-15')
 
 
