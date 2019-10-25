@@ -39,21 +39,14 @@ class TestSparseMerkle(unittest.TestCase):
 
     def test_find_root(self):
         null_proofs = self.x.get_null_proofs(4)
-        print(self.x.find_root(1, 4, {0: [], 1: [], 7: []}, null_proofs))
-        """
-        self.assertEqual(self.x.find_root(1, 4, {}, null_proofs),
-                         ('0-0-0-0-0-0-0-0', {}))
-        self.assertEqual(self.x.find_root(1, 4, {0: []}, null_proofs),
-                         ('8-0-0-0-0-0-0-0', {0: ['8', '0', '0-0', '0-0-0-0']}))
-        self.assertEqual(self.x.find_root(1, 4, [0, 4], null_proofs),
-                         '8-0-0-0-12-0-0-0')
-        self.assertEqual(self.x.find_root(1,
-                                          4,
-                                          [0, 1, 2, 3, 4, 5, 6, 7],
-                                          null_proofs),
-                         '8-9-10-11-12-13-14-15')
-        """
-
+        self.assertEqual(self.x.find_root(1, 4, {0: [], 1: [], 3: [], 6: [], 7: []}, null_proofs),
+                         ('8-9-0-11-0-0-14-15',
+                          {0: ['(', '8', '9', ')', '0-11', ')', '0-0-14-15', ')'],
+                           1: ['(', '8', '9', ')', '0-11', ')', '0-0-14-15', ')'],
+                           3: ['(', '8-9', '(', '0', '11', ')', '0-0-14-15', ')'],
+                           6: ['(', '8-9-0-11', '(', '0-0', '(', '14', '15', ')'],
+                           7: ['(', '8-9-0-11', '(', '0-0', '(', '14', '15', ')']},
+                          [0, 1, 3, 6, 7]))
 
 if __name__ == '__main__':
     unittest.main()

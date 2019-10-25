@@ -43,27 +43,40 @@ class SparseMerkle:
         if (len(present_list) > 0):
             if (self.is_leaf(sub_tree_root, global_height)):
                 proof = self.get_hash(sub_tree_root)
-                return proof, tree
+                tree[present_list[0]].append(proof)
+                if (sub_tree_root % 2 == 0):
+                    tree[present_list[0]].insert(0, '(')
+                else:
+                    tree[present_list[0]].append(')')
+                return proof, tree, present_list
             else:
-                left_root, tree = self.find_root(sub_tree_root * 2,
-                                                 global_height,
-                                                 tree,
-                                                 null_proofs)
-                right_root, tree = self.find_root(sub_tree_root * 2 + 1,
-                                                  global_height,
-                                                  tree,
-                                                  null_proofs)
+                left_root, tree, left_list = self.find_root(sub_tree_root * 2,
+                                                            global_height,
+                                                            tree,
+                                                            null_proofs)
+                right_root, tree, right_list = self.find_root(sub_tree_root * 2 + 1,
+                                                              global_height,
+                                                              tree,
+                                                              null_proofs)
                 proof = self.get_concat(left_root, right_root)
                 for present_item in present_list:
-                    tree[present_item].extend([left_root, right_root])
-                return proof, tree
+                    if present_item in left_list:
+                        tree[present_item].append(right_root)
+                        tree[present_item].append(')')
+                    elif present_item in right_list:
+                        tree[present_item].insert(0, left_root)
+                        tree[present_item].insert(0, '(')
+                    else:
+                        assert(False)
+                return proof, tree, present_list
         else:
             proof = null_proofs[
                 global_height - self.get_height(sub_tree_root) + 1]
-            return proof, tree
+            return proof, tree, present_list
+
 
 if __name__ == '__main__':
-    print(get_null_proofs(10))
+    pass
     
 
                            
