@@ -39,7 +39,7 @@ class TestSparseMerkle(unittest.TestCase):
 
     def test_find_root(self):
         null_proofs = self.x.get_null_proofs(4)
-        print(self.x.find_root(1, 4, {0: []}, null_proofs))
+        print(self.x.find_root(1, 4, {0: [], 1: [], 7: []}, null_proofs))
         """
         self.assertEqual(self.x.find_root(1, 4, {}, null_proofs),
                          ('0-0-0-0-0-0-0-0', {}))
