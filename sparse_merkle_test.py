@@ -31,17 +31,20 @@ class TestSparseMerkle(unittest.TestCase):
         self.assertEqual(self.x.get_null_proofs(6), expected)
 
     def test_present(self):
-        self.assertEqual(self.x.present(2, 4, [1]), True)
-        self.assertEqual(self.x.present(1, 4, [7]), True)
-        self.assertEqual(self.x.present(2, 4, [4, 5]), False)
-        self.assertEqual(self.x.present(2, 4, [3, 5]), True)
+        self.assertEqual(self.x.present(2, 4, {1:[]}), [1])
+        self.assertEqual(self.x.present(1, 4, {7:[]}), [7])
+        self.assertEqual(self.x.present(2, 4, {4:[], 5:[]}), [])
+        self.assertEqual(self.x.present(2, 4, {3:[], 5:[]}), [3])
+        self.assertEqual(self.x.present(1, 4, {3:[], 5:[]}), [3, 5])
 
     def test_find_root(self):
         null_proofs = self.x.get_null_proofs(4)
-        self.assertEqual(self.x.find_root(1, 4, [], null_proofs),
-                         '0-0-0-0-0-0-0-0')
-        self.assertEqual(self.x.find_root(1, 4, [0], null_proofs),
-                         '8-0-0-0-0-0-0-0')
+        print(self.x.find_root(1, 4, {0: []}, null_proofs))
+        """
+        self.assertEqual(self.x.find_root(1, 4, {}, null_proofs),
+                         ('0-0-0-0-0-0-0-0', {}))
+        self.assertEqual(self.x.find_root(1, 4, {0: []}, null_proofs),
+                         ('8-0-0-0-0-0-0-0', {0: ['8', '0', '0-0', '0-0-0-0']}))
         self.assertEqual(self.x.find_root(1, 4, [0, 4], null_proofs),
                          '8-0-0-0-12-0-0-0')
         self.assertEqual(self.x.find_root(1,
@@ -49,6 +52,7 @@ class TestSparseMerkle(unittest.TestCase):
                                           [0, 1, 2, 3, 4, 5, 6, 7],
                                           null_proofs),
                          '8-9-10-11-12-13-14-15')
+        """
 
 
 if __name__ == '__main__':

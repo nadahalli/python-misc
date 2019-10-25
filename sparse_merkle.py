@@ -30,31 +30,38 @@ class SparseMerkle:
             min_range = min_range * 2
             max_range = max_range * 2 + 1
 
+        present_list = []
         offset = 2 ** (global_height - 1)
-        for x in sorted(tree):
+        for x in sorted(tree.keys()):
             if min_range <= x + offset <= max_range:
-                return True
-        return False
+                present_list.append(x)
+        return present_list
         
 
     def find_root(self, sub_tree_root, global_height, tree, null_proofs):
-        if(self.present(sub_tree_root, global_height, tree)):
+        present_list = self.present(sub_tree_root, global_height, tree)
+        if (len(present_list) > 0):
             if (self.is_leaf(sub_tree_root, global_height)):
-                return self.get_hash(sub_tree_root)
+                proof = self.get_hash(sub_tree_root)
+                return proof, tree
             else:
-                left_proof = self.find_root(sub_tree_root * 2,
-                                            global_height,
-                                            tree,
-                                            null_proofs)
-                right_proof = self.find_root(sub_tree_root * 2 + 1,
-                                             global_height,
-                                             tree,
-                                             null_proofs)
-                return self.get_concat(left_proof, right_proof)
+                left_root, tree = self.find_root(sub_tree_root * 2,
+                                                 global_height,
+                                                 tree,
+                                                 null_proofs)
+                right_root, tree = self.find_root(sub_tree_root * 2 + 1,
+                                                  global_height,
+                                                  tree,
+                                                  null_proofs)
+                proof = self.get_concat(left_root, right_root)
+                for present_item in present_list:
+                    tree[present_item].extend([left_root, right_root])
+                return proof, tree
         else:
-            return null_proofs[
+            proof = null_proofs[
                 global_height - self.get_height(sub_tree_root) + 1]
-        
+            return proof, tree
+
 if __name__ == '__main__':
     print(get_null_proofs(10))
     
