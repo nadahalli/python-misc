@@ -112,7 +112,7 @@ class SparseMerkle:
         return self.find_root_internal(1)[0]
 
 
-    def get_inclusion_proof(self, ):
+    def get_inclusion_proof(self):
         pass
 
 
