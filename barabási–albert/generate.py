@@ -3,6 +3,7 @@ import networkx as nx
 import random
 import collections
 import json
+import matplotlib.pyplot as plt
 
 DEBUG = False
 
@@ -12,6 +13,7 @@ def convert_graph(g, cfactor):
         for anode in alist:
             mg[node + cfactor].append(anode + cfactor)
     return(mg)
+
 
 def merge_graphs(g1, g2):
     g_keys = list(g1.keys())
@@ -38,7 +40,17 @@ def merge_graphs(g1, g2):
     add_graph(g2)
 
     return(dict(sorted(ret_g.items())))
-        
+
+
+def visualize_graph(g):
+    visual_graph = nx.Graph()
+    for node, alist in g.items():
+        for anode in alist:
+            visual_graph.add_edge(node, anode)
+            
+    nx.draw(visual_graph, with_labels=True)
+    plt.show()
+
 
 def corrupt_graph(dest_graph, source_graph, corruption_factor, corrupt_all_nodes = False):
     dest_sorted = {k: v for k, v in sorted(dest_graph.items(), key=lambda item: len(item[1]))}
@@ -89,6 +101,9 @@ if __name__ == '__main__':
     full_graph = merge_graphs(good_after_corruption, bad_after_corruption)
 
     print(json.dumps(full_graph))
+
+    visualize_graph(full_graph)
+
     
 
     
