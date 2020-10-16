@@ -21,13 +21,12 @@ def generate_isomorphism(g):
                 
             new_edge.append(replacement)
         edges.append(tuple(new_edge))
-    return edges
+    return sorted(edges)
 
-k = 20
+k = 10
 
 g = random_regular_graph(k, 2*k+1)
 
-#print(",".join(map(str, g.edges())))
 for i in range(100000):
     print(1, ",".join(map(str, generate_isomorphism(g))))
 
