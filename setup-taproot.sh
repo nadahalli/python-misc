@@ -39,6 +39,8 @@ EOL
 
 
 # Clone the Optech Taproot Workshop and setup the config.ini + enviroment.
+wget -q -O taproot-workshop.zip https://github.com/bitcoinops/taproot-workshop/archive/refs/heads/master.zip
+unzip taproot-workshop.zip
 git clone -q https://github.com/bitcoinops/taproot-workshop.git
 cp taproot-workshop/util.py content
 cp taproot-workshop/requirements.txt content
